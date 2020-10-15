@@ -1,10 +1,13 @@
 import React, { memo } from "react";
+import { Layout, Input } from 'antd';
 import { connect, ConnectedProps } from "react-redux";
 
 import { ApplicationState } from "../../reducers";
 import { Dispatch } from "../../common/types";
 import { getPodcast, PodcastState } from "../../reducers/PodcastReducer";
 import { selectPodcast } from '../../actions/PodcastActions';
+
+import './Home.scss';
 
 const mapStateToProps = (state: ApplicationState) => ({
   podcast: getPodcast(state),
@@ -25,10 +28,17 @@ interface Props extends ConnectedProps<typeof connector> {
 
 const Home = memo((props: Props) => {
   return (
-    <>
-      <h1 onClick={() => props.selectPodcast('http://google.com')}>Hello!</h1>
-      { (props.podcast) ? <h2>name: { props.podcast?.name }</h2> :  '' }
-    </>
+    <div className="home">
+      <Layout.Content className="home__content">
+        <span className="home__title" onClick={() => props.selectPodcast('http://google.com')}>Search Podcast</span>
+        <div className="home__search-box">
+          <Input.Search 
+            enterButton="Search"
+            placeholder="TYPE PODCAST URL" />
+          { (props.podcast) ? <h2>name: { props.podcast?.name }</h2> :  '' }
+        </div>
+      </Layout.Content>
+    </div>
   )
 })
 
