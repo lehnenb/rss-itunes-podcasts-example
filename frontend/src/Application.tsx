@@ -1,13 +1,18 @@
 import * as React from "react";
-import { Provider } from "react-redux";
-import { ApplicationStore } from "./store";
-import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
+
+import Home from './containers/Home';
 
 import "./Application.scss";
 
-export const Application: React.FunctionComponent = () => {
+const Application: React.FunctionComponent = () => {
   return (
-    <Provider store={ ApplicationStore }>
-    </Provider>
+    <Switch>
+      <Route path="/">
+        <Home />
+      </Route>
+    </Switch>
   );
 };
+
+export default Application;
