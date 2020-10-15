@@ -26,6 +26,8 @@ interface Props extends ConnectedProps<typeof connector> {
 }
 
 
+const BACKEND_URL = process.env.BACKEND_URL;
+
 const Home = memo((props: Props) => {
   return (
     <div className="home">
@@ -34,6 +36,8 @@ const Home = memo((props: Props) => {
         <div className="home__search-box">
           <Input.Search 
             enterButton="Search"
+            size="large"
+            onSearch={ () => console.log(BACKEND_URL) }
             placeholder="TYPE PODCAST URL" />
           { (props.podcast) ? <h2>name: { props.podcast?.name }</h2> :  '' }
         </div>

@@ -4,10 +4,11 @@
 
   &__content {
     max-width: 1000px;
+    min-width: 500px;
     margin-top: 20px;
     display: flex;
     flex-flow: column;
-    background-color: #fff;
+    background-color: #f0f2f5;
     border: solid 1px #eee;
     min-height: 500px !important;
     text-align: center;
@@ -16,11 +17,30 @@
       background: #fe615a;
       border: solid 1px #fe615a;
     }
+
+    @media only screen and (min-height: 800px) {
+      margin-top: 40px;
+    }
+
+    @media only screen and (min-height: 1000px) {
+      min-height: 600px !important;
+      margin-top: 10%
+    }
   }
 
+
   &__title {
-    font-size: 2.5em;
+    font-size: 3em;
     color: #001529;
     font-family: "Sofia Pro";
+
+
+    @media only screen and (min-width: 1900px) {
+      font-size: 3.5em;
+    }
+
+    @media only screen and (max-width: 768px) {
+      font-size: 2.5em;
+    }
   }
 }
