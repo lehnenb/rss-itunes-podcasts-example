@@ -25,19 +25,16 @@ interface Props extends ConnectedProps<typeof connector> {
   podcast: PodcastState | null
 }
 
-
-const BACKEND_URL = process.env.BACKEND_URL;
-
 const Home = memo((props: Props) => {
   return (
     <div className="home">
       <Layout.Content className="home__content">
-        <span className="home__title" onClick={() => props.selectPodcast('http://google.com')}>Search Podcast</span>
+        <span className="home__title">Search Podcast</span>
         <div className="home__search-box">
           <Input.Search 
             enterButton="Search"
             size="large"
-            onSearch={ () => console.log(BACKEND_URL) }
+            onSearch={(url: string) => props.selectPodcast(url)}
             placeholder="TYPE PODCAST URL" />
           { (props.podcast) ? <h2>name: { props.podcast?.name }</h2> :  '' }
         </div>
