@@ -1,4 +1,4 @@
-import * as RedisService from '../../src/services/redis-service';
+import * as RedisService from '../../src/services/redis_service';
 
 describe('Redis Service', () => {
   afterAll(() => RedisService.client.quit());
