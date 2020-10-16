@@ -23,7 +23,7 @@ describe('Itunes Service', () => {
       collectionViewUrl: "https://podcasts.apple.com/us/podcast/corecursive-with-adam-gordon-bell/id1330329512?uo=4"
     };
 
-    describe('without artist ID and artist URL', () => {
+    describe('without optional data', () => {
       it('should return the correct data from itunes', () => {
         mockedSearch.mockResolvedValue({
           results: [result],
@@ -37,20 +37,33 @@ describe('Itunes Service', () => {
           author: {
             name: "Adam Gordon Bell"
           },
-          artwork: "https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/100x100bb.jpg",
-          genre: "Technology",
-          url: "https://podcasts.apple.com/us/podcast/corecursive-with-adam-gordon-bell/id1330329512?uo=4"
+          artwork: {
+            medium: "https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/100x100bb.jpg",
+          },
+          primaryGenre: "Technology",
+          viewURL: "https://podcasts.apple.com/us/podcast/corecursive-with-adam-gordon-bell/id1330329512?uo=4",
+          genres: [],
         })
       });
     });
 
-    describe('with artist ID and artist URL', () => {
+    describe('with optionalData', () => {
       it('should return the correct data from itunes', () => {
         mockedSearch.mockResolvedValue({
           results: [{
             ...result,
-            artistViewUrl: 'http://artisturl.com',
+            artistViewUrl: "http://artisturl.com",
             artistId: 5553333,
+            collectionId: 393939,
+            primaryGenreName: "Technology",
+            artworkUrl100: "https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/100x100bb.jpg",
+            artworkUrl60: "https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/60x60bb.jpg",
+            raw: {
+              artworkUrl600: "https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/600x600bb.jpg",
+              genres: ["Technology", "Education"],
+              feedUrl: "https://corecursive.libsyn.com/feed",
+            },
+            collectionViewUrl: "https://podcasts.apple.com/us/podcast/corecursive-with-adam-gordon-bell/id1330329512?uo=4",
           }],
           resultCount: 1,
         });
@@ -58,15 +71,22 @@ describe('Itunes Service', () => {
         const promise = ItunesService.getByID('124444');
 
         return expect(promise).resolves.toEqual({
+          id: 393939,
           name: "CoRecursive with Adam Gordon Bell",
+          feedURL: "https://corecursive.libsyn.com/feed",
+          genres: ["Technology", "Education"],
           author: {
             id: 5553333,
             url: 'http://artisturl.com',
             name: "Adam Gordon Bell",
           },
-          artwork: "https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/100x100bb.jpg",
-          genre: "Technology",
-          url: "https://podcasts.apple.com/us/podcast/corecursive-with-adam-gordon-bell/id1330329512?uo=4"
+          artwork: {
+            small: "https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/60x60bb.jpg",
+            medium: "https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/100x100bb.jpg",
+            big: "https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/600x600bb.jpg"
+          },
+          primaryGenre: "Technology",
+          viewURL: "https://podcasts.apple.com/us/podcast/corecursive-with-adam-gordon-bell/id1330329512?uo=4"
         })
       });
     });

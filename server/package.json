@@ -6,7 +6,7 @@
   "scripts": {
     "build": "eslint . && tsc --build",
     "server:start": "NODE_ENV=production docker-compose up --detach && yarn build && node dist/index.js",
-    "server:watch": "cross-env NODE_ENV=development nodemon --watch src -e ts,tsx --exec ts-node src/server/server.ts",
+    "server:watch": "cross-env docker-compose up --detach && NODE_ENV=development nodemon --watch src -e ts,tsx --exec ts-node src/server/server.ts",
     "test": "cross-env NODE_ENV=test docker-compose -f docker-compose.test.yml up --detach && REDIS_PORT=6380 jest"
   },
   "devDependencies": {
@@ -38,7 +38,8 @@
     "koa-mounter": "0.0.4",
     "koa-router": "9.4.0",
     "node-itunes-search": "1.2.2",
-    "redis": "3.0.2"
+    "redis": "3.0.2",
+    "rss-parser": "^3.9.0"
   },
   "jest": {
     "moduleFileExtensions": [

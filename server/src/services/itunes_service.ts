@@ -20,28 +20,56 @@ export function extractID(url: string): string {
 }
 
 interface ItunesData {
+  id?: number;
   name: string;
+  episodeCount?: number;
+  genres: string[];
+  feedURL?: string;
+  viewURL?: string;
+  lastEpisodeDate?: string;
+  primaryGenre?: string;
   author: {
     url?: string;
     name?: string;
     id?: number;
   };
-  artwork?: string;
-  genre?: string;
-  url?: string;
+  artwork: {
+    small?: string;
+    medium?: string;
+    big?: string;
+  };
+}
+
+interface RawData {
+  genres: string[];
+  artworkUrl600: string;
+  feedUrl: string; 
+  trackCount: number;
+  releaseDate: string;
 }
 
 function mapItunesPropertiesToPodcastData(result: ItunesProperties): ItunesData {
+  const raw: Partial<RawData> = { ...result.raw };
+
   return {
+    id: result.collectionId,
     name: result.collectionName,
+    episodeCount: raw.trackCount,
+    lastEpisodeDate: raw.releaseDate,
+    primaryGenre: result.primaryGenreName,
+    genres: raw.genres || [],
+    viewURL: result.collectionViewUrl,
+    feedURL: raw.feedUrl,
     author: {
       id: result.artistId,
       name: result.artistName,
       url: result.artistViewUrl,
     },
-    artwork: result.artworkUrl100,
-    genre: result.primaryGenreName,
-    url: result.collectionViewUrl
+    artwork: {
+      small: result.artworkUrl60,
+      medium: result.artworkUrl100,
+      big: raw.artworkUrl600,
+    },
   };
 }
 
