@@ -1,14 +1,16 @@
-import * as ItunesService from '../../src/services/itunes_service';
-import * as RedisService from '../../src/services/redis_service';
-
 import ItunesSearch from 'node-itunes-search';
 import { mocked } from 'ts-jest/utils';
+import { promisify } from 'util';
+
+import * as ItunesService from '../../src/services/itunes_service';
+import * as RedisService from '../../src/services/redis_service';
 
 jest.mock('node-itunes-search');
 
 const mockedSearch =  mocked(ItunesSearch.lookup);
 
-afterAll(() => RedisService.client.quit());
+afterEach(() => promisify(RedisService.client.flushall).call(RedisService.client));
+afterAll(() => promisify(RedisService.client.quit).call(RedisService.client));
 
 describe('Itunes Service', () => {
   describe('Success', () => {
@@ -58,7 +60,7 @@ describe('Itunes Service', () => {
         return expect(promise).resolves.toEqual({
           name: "CoRecursive with Adam Gordon Bell",
           author: {
-            id: 123333,
+            id: 5553333,
             url: 'http://artisturl.com',
             name: "Adam Gordon Bell",
           },

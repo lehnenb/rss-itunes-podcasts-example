@@ -1,4 +1,8 @@
 import * as RedisService from '../../src/services/redis_service';
+import { promisify } from 'util';
+
+afterEach(() => promisify(RedisService.client.flushall).call(RedisService.client));
+afterAll(() => promisify(RedisService.client.quit).call(RedisService.client));
 
 describe('Redis Service', () => {
   afterAll(() => RedisService.client.quit());
@@ -13,7 +17,8 @@ describe('Redis Service', () => {
     return expect(setPromise).resolves.toStrictEqual(true);
   });
 
-  test('get wrapper should resolve to value if key exists', () => {
+  test('get wrapper should resolve to value if key exists', async () => {
+    await RedisService.set('test', 'testValue', 12);
     const getPromise = RedisService.get('test');
     return expect(getPromise).resolves.toStrictEqual('testValue');
   });
@@ -23,9 +28,10 @@ describe('Redis Service', () => {
     return expect(value).resolves.toBe(null);
   });
 
-  test('getOrSet should resolve to value if key exists without calling set', () => {
+  test('getOrSet should resolve to value if key exists without calling set', async () => {
     const cb = jest.fn(() => Promise.resolve('overwriten value'));
     const key = 'test';
+    await RedisService.set('test', 'testValue', 12);
     const getOrSetPromise = RedisService.getOrSet(key, cb, 12);
     return expect(getOrSetPromise).resolves.toStrictEqual('testValue');
   });
