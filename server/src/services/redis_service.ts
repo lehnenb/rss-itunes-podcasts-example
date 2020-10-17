@@ -27,7 +27,7 @@ export async function getOrSet(key: string, setFn: () => Promise<string | null>,
   const newData = await setFn();
 
   if (newData) {
-    set(key, newData, expire);
+    await set(key, newData, expire);
   }
   
   return newData || null;

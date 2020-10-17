@@ -8,8 +8,6 @@ export async function show(ctx: Context): Promise<void> {
     const itunesData = await getByID(ctx.params.id);
     ctx.response.body = itunesData;
   } catch (e) {
-    console.error(e);
-
     switch (true) {
       case e instanceof InvalidInputError:
         ctx.throw(e.message, 422);

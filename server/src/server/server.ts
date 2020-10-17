@@ -7,10 +7,10 @@ import { config } from './config';
 import { logger } from './logging';
 import { routes } from './routes';
 
-const app: Koa = new Koa();
+const application: Koa = new Koa();
 
-app.use(logger);
-app.use(routes);
-app.listen(config.port);
+application.use(logger);
+application.use(routes);
+export const server = application.listen(config.port);
 
 console.log(`Server running on port ${config.port}`);
