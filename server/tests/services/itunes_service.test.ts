@@ -1,4 +1,4 @@
-import ItunesSearch from 'node-itunes-search';
+import ItunesSearch, { ItunesProperties } from 'node-itunes-search';
 
 import { mocked } from 'ts-jest/utils';
 import { promisify } from 'util';
@@ -10,7 +10,14 @@ import * as RedisService from '../../src/services/redis_service';
 
 jest.mock('node-itunes-search');
 
-const mockedSearch =  mocked(ItunesSearch.lookup);
+
+function mockSearch(returnValue: ItunesProperties[]) {
+  const mockedSearch =  mocked(ItunesSearch.lookup);
+  mockedSearch.mockResolvedValue({
+    results: returnValue,
+    resultCount: returnValue.length,
+  });
+}
 
 afterEach(() => promisify(RedisService.client.flushall).call(RedisService.client));
 afterAll(() => promisify(RedisService.client.quit).call(RedisService.client));
@@ -28,10 +35,7 @@ describe('Itunes Service', () => {
 
     describe('without optional data', () => {
       it('should return the correct data from itunes', () => {
-        mockedSearch.mockResolvedValue({
-          results: [result],
-          resultCount: 1,
-        });
+        mockSearch([result]);
 
         const promise = ItunesService.getByID('552333');
 
@@ -52,8 +56,7 @@ describe('Itunes Service', () => {
 
     describe('with optionalData', () => {
       it('should return the correct data from itunes', () => {
-        mockedSearch.mockResolvedValue({
-          results: [{
+        mockSearch([{
             ...result,
             artistViewUrl: 'http://artisturl.com',
             artistId: 5553333,
@@ -67,9 +70,7 @@ describe('Itunes Service', () => {
               feedUrl: 'https://corecursive.libsyn.com/feed',
             },
             collectionViewUrl: 'https://podcasts.apple.com/us/podcast/corecursive-with-adam-gordon-bell/id1330329512?uo=4',
-          }],
-          resultCount: 1,
-        });
+        }]);
 
         const promise = ItunesService.getByID('124444');
 
@@ -98,10 +99,7 @@ describe('Itunes Service', () => {
   describe('Failure', () => {
     describe('not found', () => {
       it('should throw ResourceNotFoundError when record is not found', () => {
-        mockedSearch.mockResolvedValue({
-          results: [],
-          resultCount: 0,
-        });
+        mockSearch([]);
 
         const promise = ItunesService.getByID('11222333');
         return expect(promise).rejects.toThrowError(ResourceNotFoundError);
@@ -109,11 +107,8 @@ describe('Itunes Service', () => {
     });
 
     describe('invalid ID', () => {
-      it('should throw InvalidInputError when record is not found', () => {
-        mockedSearch.mockResolvedValue({
-          results: [],
-          resultCount: 0,
-        });
+      it('should throw InvalidInputError when ID is invalid', () => {
+        mockSearch([]);
 
         const promise = ItunesService.getByID('dd9d911222333');
         return expect(promise).rejects.toThrowError(InvalidInputError);

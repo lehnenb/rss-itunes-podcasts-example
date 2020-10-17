@@ -5,16 +5,27 @@ afterEach(() => promisify(RedisService.client.flushall).call(RedisService.client
 afterAll(() => promisify(RedisService.client.quit).call(RedisService.client));
 
 describe('Redis Service', () => {
-  afterAll(() => RedisService.client.quit());
-
   test('set wrapper should return promise', () => {
     const setPromise = RedisService.set('test', 'testValue', 12);
     expect(setPromise).resolves.toStrictEqual(true);
   });
 
-  test('set wrapper should not set expiration time if no exp. argument is passed', () => {
-    const setPromise = RedisService.set('test2', 'testValue2');
-    return expect(setPromise).resolves.toStrictEqual(true);
+  test('set wrapper should not set expiration time if no exp. argument is passed', async () => {
+    const setSpy = jest.spyOn(RedisService.client, 'set');
+    const setexSpy = jest.spyOn(RedisService.client, 'setex');
+
+    await RedisService.set('test2', 'testValue2');
+
+    expect(setexSpy).not.toHaveBeenCalled();
+    expect(setSpy).toHaveBeenCalledWith('test2', 'testValue2', expect.anything());
+  });
+
+  test('set wrapper should set expiration time if exp. argument is passed', async () => {
+    const setexSpy = jest.spyOn(RedisService.client, 'setex');
+    
+    await RedisService.set('test2', 'testValue2', 120);
+
+    expect(setexSpy).toHaveBeenCalledWith('test2', 120, 'testValue2', expect.anything());
   });
 
   test('get wrapper should resolve to value if key exists', async () => {
