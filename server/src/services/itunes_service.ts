@@ -1,7 +1,7 @@
 import ItunesSearch, { ItunesEntityPodcast, ItunesLookupType, ItunesProperties } from 'node-itunes-search';
 import { InvalidInputError } from '../errors/invalid_input_error';
 import { ResourceNotFoundError } from '../errors/resource_not_found_error';
-import { PodcastData } from './podcast_service';
+import { PodcastData } from 'api_types';
 import { getOrSet } from './redis_service';
 
 interface RawData {

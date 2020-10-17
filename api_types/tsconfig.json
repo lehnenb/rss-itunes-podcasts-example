@@ -1,12 +1,10 @@
 {
   "extends": "@tsconfig/recommended/tsconfig.json",
   "compilerOptions": {
+    "declaration": true,
     "esModuleInterop": true,
     "outDir": "./dist",
     "skipLibCheck": true
   },
-  "include": [
-      "src/**/*",
-      "test/**/*"
-  ]
+  "files": ["index.d.ts"]
 }

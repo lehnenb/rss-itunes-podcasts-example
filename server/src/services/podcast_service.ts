@@ -1,37 +1,9 @@
+import { PodcastData , ResponsePodcastData } from 'api_types';
 import * as ItunesService from '../services/itunes_service';
 import * as FeedService from '../services/feed_service';
 
 export interface PodcastProvider {
   getProviderDataByID(podcastID: string): Promise<PodcastData>
-}
-
-export interface PodcastData {
-  id?: number;
-  name: string;
-  episodeCount?: number;
-  genres: string[];
-  feedURL?: string;
-  viewURL?: string;
-  lastEpisodeDate?: string;
-  primaryGenre?: string;
-  author: {
-    url?: string;
-    name?: string;
-    id?: number;
-  };
-  artwork: {
-    small?: string;
-    medium?: string;
-    big?: string;
-  };
-}
-
-export interface ResponsePodcastData extends PodcastData {
-  additionalInfo?: {
-    startDate?: string;
-    image?: string;
-    summary?: string;
-  },
 }
 
 export async function getByID(podcastID: string, provider: PodcastProvider = ItunesService): Promise<ResponsePodcastData> {
