@@ -1,5 +1,8 @@
-import  ItunesSearch, { ItunesEntityPodcast, ItunesLookupType, ItunesProperties } from "node-itunes-search";
-import { getOrSet } from "./redis_service";
+import ItunesSearch, { ItunesEntityPodcast, ItunesLookupType, ItunesProperties } from 'node-itunes-search';
+import { InvalidInputError } from '../errors/invalid_input_error';
+import { ResourceNotFoundError } from '../errors/resource_not_found_error';
+import { PodcastData } from './podcast_service';
+import { getOrSet } from './redis_service';
 
 export function extractID(url: string): string {
   try {
@@ -15,29 +18,8 @@ export function extractID(url: string): string {
   } catch(e: unknown) {
     console.error(e); 
     
-    throw new Error(`Invalid URL`);
+    throw new Error('Invalid URL');
   }
-}
-
-interface ItunesData {
-  id?: number;
-  name: string;
-  episodeCount?: number;
-  genres: string[];
-  feedURL?: string;
-  viewURL?: string;
-  lastEpisodeDate?: string;
-  primaryGenre?: string;
-  author: {
-    url?: string;
-    name?: string;
-    id?: number;
-  };
-  artwork: {
-    small?: string;
-    medium?: string;
-    big?: string;
-  };
 }
 
 interface RawData {
@@ -48,7 +30,7 @@ interface RawData {
   releaseDate: string;
 }
 
-function mapItunesPropertiesToPodcastData(result: ItunesProperties): ItunesData {
+function mapItunesPropertiesToPodcastData(result: ItunesProperties): PodcastData {
   const raw: Partial<RawData> = { ...result.raw };
 
   return {
@@ -73,9 +55,13 @@ function mapItunesPropertiesToPodcastData(result: ItunesProperties): ItunesData 
   };
 }
 
-export async function getByID(podcastID: string): Promise<ItunesData | null> {
+export async function getByID(podcastID: string): Promise<PodcastData> {
+  if (!podcastID.match(/^[0-9]+$/)) {
+    throw new InvalidInputError('Invalid Podcast ID');
+  }
+
   const data = await getOrSet(podcastID, async () => {
-    const data = await ItunesSearch
+    const searchData = await ItunesSearch
       .lookup({
         keys: [podcastID],
         keyType: ItunesLookupType.ID,
@@ -83,12 +69,12 @@ export async function getByID(podcastID: string): Promise<ItunesData | null> {
         limit: 1,
       });
 
-    if (data.resultCount == 0) {
-      return null;
+    if (searchData.resultCount == 0) {
+      throw new ResourceNotFoundError('Podcast not found');
     }
 
     return JSON.stringify(
-      mapItunesPropertiesToPodcastData(data.results[0]),
+      mapItunesPropertiesToPodcastData(searchData.results[0]),
     );
   }, 3600);
 
