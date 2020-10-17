@@ -11,6 +11,35 @@ import * as RedisService from '../../src/services/redis_service';
 jest.mock('node-itunes-search');
 
 
+function partialItunesData() {
+  return {
+    collectionName: 'CoRecursive with Adam Gordon Bell',
+    raw: {},
+    artistName: 'Adam Gordon Bell',
+    primaryGenreName: 'Technology',
+    artworkUrl100:  'https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/100x100bb.jpg',
+    collectionViewUrl: 'https://podcasts.apple.com/us/podcast/corecursive-with-adam-gordon-bell/id1330329512?uo=4'
+  };
+}
+
+function fullItunesData() {
+  return {
+    ...partialItunesData(),
+    artistViewUrl: 'http://artisturl.com',
+    artistId: 5553333,
+    collectionId: 393939,
+    primaryGenreName: 'Technology',
+    artworkUrl100: 'https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/100x100bb.jpg',
+    artworkUrl60: 'https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/60x60bb.jpg',
+    raw: {
+      artworkUrl600: 'https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/600x600bb.jpg',
+      genres: ['Technology', 'Education'],
+      feedUrl: 'https://corecursive.libsyn.com/feed',
+    },
+    collectionViewUrl: 'https://podcasts.apple.com/us/podcast/corecursive-with-adam-gordon-bell/id1330329512?uo=4',
+  }
+}
+
 function mockSearch(returnValue: ItunesProperties[]) {
   const mockedSearch =  mocked(ItunesSearch.lookup);
   mockedSearch.mockResolvedValue({
@@ -24,18 +53,9 @@ afterAll(() => promisify(RedisService.client.quit).call(RedisService.client));
 
 describe('Itunes Service', () => {
   describe('Success', () => {
-    const result = {
-      collectionName: 'CoRecursive with Adam Gordon Bell',
-      raw: {},
-      artistName: 'Adam Gordon Bell',
-      primaryGenreName: 'Technology',
-      artworkUrl100:  'https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/100x100bb.jpg',
-      collectionViewUrl: 'https://podcasts.apple.com/us/podcast/corecursive-with-adam-gordon-bell/id1330329512?uo=4'
-    };
-
     describe('without optional data', () => {
       it('should return the correct data from itunes', () => {
-        mockSearch([result]);
+        mockSearch([partialItunesData()]);
 
         const promise = ItunesService.getByID('552333');
 
@@ -56,21 +76,7 @@ describe('Itunes Service', () => {
 
     describe('with optionalData', () => {
       it('should return the correct data from itunes', () => {
-        mockSearch([{
-            ...result,
-            artistViewUrl: 'http://artisturl.com',
-            artistId: 5553333,
-            collectionId: 393939,
-            primaryGenreName: 'Technology',
-            artworkUrl100: 'https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/100x100bb.jpg',
-            artworkUrl60: 'https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/60x60bb.jpg',
-            raw: {
-              artworkUrl600: 'https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/a4/95/28/a4952813-8035-a67e-8522-3f08a4aa97d3/mza_3857535690737981623.jpg/600x600bb.jpg',
-              genres: ['Technology', 'Education'],
-              feedUrl: 'https://corecursive.libsyn.com/feed',
-            },
-            collectionViewUrl: 'https://podcasts.apple.com/us/podcast/corecursive-with-adam-gordon-bell/id1330329512?uo=4',
-        }]);
+        mockSearch([fullItunesData()]);
 
         const promise = ItunesService.getByID('124444');
 
