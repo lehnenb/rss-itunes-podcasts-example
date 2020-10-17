@@ -10,7 +10,6 @@ import * as RedisService from '../../src/services/redis_service';
 
 jest.mock('node-itunes-search');
 
-
 function partialItunesData() {
   return {
     collectionName: 'CoRecursive with Adam Gordon Bell',
@@ -57,7 +56,7 @@ describe('Itunes Service', () => {
       it('should return the correct data from itunes', () => {
         mockSearch([partialItunesData()]);
 
-        const promise = ItunesService.getByID('552333');
+        const promise = ItunesService.getProviderDataByID('552333');
 
         return expect(promise).resolves.toEqual({
           name: 'CoRecursive with Adam Gordon Bell',
@@ -78,7 +77,7 @@ describe('Itunes Service', () => {
       it('should return the correct data from itunes', () => {
         mockSearch([fullItunesData()]);
 
-        const promise = ItunesService.getByID('124444');
+        const promise = ItunesService.getProviderDataByID('124444');
 
         return expect(promise).resolves.toEqual({
           id: 393939,
@@ -107,7 +106,7 @@ describe('Itunes Service', () => {
       it('should throw ResourceNotFoundError when record is not found', () => {
         mockSearch([]);
 
-        const promise = ItunesService.getByID('11222333');
+        const promise = ItunesService.getProviderDataByID('11222333');
         return expect(promise).rejects.toThrowError(ResourceNotFoundError);
       });
     });
@@ -116,7 +115,7 @@ describe('Itunes Service', () => {
       it('should throw InvalidInputError when ID is invalid', () => {
         mockSearch([]);
 
-        const promise = ItunesService.getByID('dd9d911222333');
+        const promise = ItunesService.getProviderDataByID('dd9d911222333');
         return expect(promise).rejects.toThrowError(InvalidInputError);
       });
     });

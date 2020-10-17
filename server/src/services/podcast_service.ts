@@ -1,8 +1,8 @@
 import * as ItunesService from '../services/itunes_service';
 import * as FeedService from '../services/feed_service';
 
-interface PodcastProvider {
-  getByID(podcastID: string): Promise<PodcastData>
+export interface PodcastProvider {
+  getProviderDataByID(podcastID: string): Promise<PodcastData>
 }
 
 export interface PodcastData {
@@ -35,7 +35,7 @@ export interface ResponsePodcastData extends PodcastData {
 }
 
 export async function getByID(podcastID: string, provider: PodcastProvider = ItunesService): Promise<ResponsePodcastData> {
-  const podcastData = await provider.getByID(podcastID);
+  const podcastData = await provider.getProviderDataByID(podcastID);
 
   if (podcastData?.feedURL) {
     const rssData = await FeedService.getFeedByURL(podcastData.feedURL);

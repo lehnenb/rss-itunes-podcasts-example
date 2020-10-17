@@ -5,7 +5,7 @@ import { InvalidInputError } from '../../src/errors/invalid_input_error';
 import { ResourceNotFoundError } from '../../src/errors/resource_not_found_error';
 
 import * as FeedService from '../../src/services/feed_service';
-import * as RedisService from '../../src/services/redis_service';
+import { client as redisClient } from '../../src/services/redis_service';
 
 jest.mock('rss-parser');
 
@@ -17,8 +17,8 @@ const feedData = {
   description: 'This is a summary about a podcast',
 };
 
-afterEach(() => promisify(RedisService.client.flushall).call(RedisService.client));
-afterAll(() => promisify(RedisService.client.quit).call(RedisService.client));
+afterEach(() => promisify(redisClient.flushall).call(redisClient));
+afterAll(() => promisify(redisClient.quit).call(redisClient));
 
 describe('Feed Service', () => {
   describe('Success', () => {

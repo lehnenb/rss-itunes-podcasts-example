@@ -4,24 +4,6 @@ import { ResourceNotFoundError } from '../errors/resource_not_found_error';
 import { PodcastData } from './podcast_service';
 import { getOrSet } from './redis_service';
 
-export function extractID(url: string): string {
-  try {
-    const parsedURL = new URL(url);
-    const matchData = parsedURL.pathname.match(/\/id([0-9]*)$/)
-
-    if (matchData) {
-      return matchData[2];
-    } else {
-      throw new Error('ID segment not found');
-    }
-
-  } catch(e: unknown) {
-    console.error(e); 
-    
-    throw new Error('Invalid URL');
-  }
-}
-
 interface RawData {
   genres: string[];
   artworkUrl600: string;
@@ -55,7 +37,7 @@ function mapItunesPropertiesToPodcastData(result: ItunesProperties): PodcastData
   };
 }
 
-export async function getByID(podcastID: string): Promise<PodcastData> {
+export async function getProviderDataByID(podcastID: string): Promise<PodcastData> {
   if (!podcastID.match(/^[0-9]+$/)) {
     throw new InvalidInputError('Invalid Podcast ID');
   }
