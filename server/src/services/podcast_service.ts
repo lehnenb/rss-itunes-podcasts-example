@@ -29,6 +29,7 @@ export interface PodcastData {
 export interface ResponsePodcastData extends PodcastData {
   additionalInfo?: {
     startDate?: string;
+    image?: string;
     summary?: string;
   },
 }
@@ -44,6 +45,7 @@ export async function getByID(podcastID: string, provider: PodcastProvider = Itu
         ...podcastData,
         additionalInfo: {
           startDate: rssData.startDate,
+          image: rssData.image,
           summary: rssData.summary,
         }
       }
