@@ -1,12 +1,8 @@
 import { combineReducers } from 'redux';
+import PodcastReducer from './PodcastReducer';
 
-import { PodcastState, PodcastReducer } from './PodcastReducer';
+const ApplicationReducer = combineReducers({
+  podcast: PodcastReducer,
+});
 
-export interface ApplicationState {
-  podcast: PodcastState | null;
-}
-
-export const ApplicationReducer =  combineReducers({ 
-  podcast: PodcastReducer
-})
-
+export default ApplicationReducer;

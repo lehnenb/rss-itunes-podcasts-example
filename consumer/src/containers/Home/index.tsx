@@ -1,47 +1,44 @@
-import React, { memo } from "react";
-import { Layout, Input } from 'antd';
-import { connect, ConnectedProps } from "react-redux";
+import React, { memo } from 'react';
+import { useHistory } from 'react-router-dom';
+import { connect, ConnectedProps } from 'react-redux';
+import { Action } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { Layout } from 'antd';
 
-import { ApplicationState } from "../../reducers";
-import { Dispatch } from "../../common/types";
-import { getPodcast, PodcastState } from "../../reducers/PodcastReducer";
-import { selectPodcast } from '../../actions/PodcastActions';
+import { ApplicationState } from '../../reducers/States';
+import fetchPodcast from '../../actions/PodcastActions';
+
+// Components
+import Search from '../../components/SearchBox';
 
 import './Home.scss';
 
-const mapStateToProps = (state: ApplicationState) => ({
-  podcast: getPodcast(state),
-})
+const mapStateToProps = () => ({});
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    selectPodcast: (url: string) => dispatch(selectPodcast(url))
-  };
-};
+const mapDispatchToProps = (dispatch: ThunkDispatch<ApplicationState, unknown, Action>) => ({
+  fetchPodcastData: (url: string) => dispatch(fetchPodcast(url)),
+});
 
-const connector = connect(mapStateToProps, mapDispatchToProps)
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 interface Props extends ConnectedProps<typeof connector> {
-  podcast: PodcastState | null
 }
 
-const Home = memo((props: Props) => {
+const Home: React.FunctionComponent<Props> = ({ fetchPodcastData }: Props) => {
+  const history = useHistory();
+
+  function onSearch(url: string): void {
+    fetchPodcastData(url);
+    history.push('/podcast');
+  }
+
   return (
     <div className="home">
       <Layout.Content className="home__content">
-        <span className="home__title">Search Podcast</span>
-        <div className="home__search-box">
-          <Input.Search 
-            enterButton="Search"
-            size="large"
-            onSearch={(url: string) => props.selectPodcast(url)}
-            placeholder="TYPE PODCAST URL" />
-          { (props.podcast) ? <h2>name: { props.podcast?.name }</h2> :  '' }
-        </div>
+        <Search onSearch={(url) => onSearch(url)} />
       </Layout.Content>
     </div>
-  )
-})
+  );
+};
 
-export default connector(Home);
-
+export default connector(memo(Home));

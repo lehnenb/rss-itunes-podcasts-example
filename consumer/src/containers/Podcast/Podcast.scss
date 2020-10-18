@@ -1,6 +1,16 @@
-.home {
+.podcast {
   display: flex;
   justify-content: center;
+
+  &__back-button {
+    position: absolute;
+    margin-top: -83px;
+    margin-left: -33px;
+    color: #444;
+    cursor: pointer;
+    font-weight: 600;
+    max-height: 10px;
+  }
 
   &__content {
     max-width: 1000px;

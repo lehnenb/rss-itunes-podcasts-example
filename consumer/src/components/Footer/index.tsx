@@ -1,14 +1,12 @@
-import React, { memo } from "react";
+import React, { memo } from 'react';
 import { Layout } from 'antd';
 
-import "./Footer.scss";
+import './Footer.scss';
 
-const Footer: React.FunctionComponent = () => {
-  return (
-    <Layout.Footer className="footer">
-      Audry ©2020 Created by Bruno Lehnen
-    </Layout.Footer>
-  );
-};
+const Footer: React.FunctionComponent = () => (
+  <Layout.Footer className="footer">
+    Audry ©2020 Created by Bruno Lehnen
+  </Layout.Footer>
+);
 
 export default memo(Footer);
