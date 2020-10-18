@@ -1,6 +1,9 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "ignorePatterns": [
     "dist/**",
     "node_modules/**",
@@ -16,14 +19,13 @@
     "airbnb/hooks",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "prettier"
+    "plugin:@typescript-eslint/recommended"
   ],
-  "rules": {
-    "import/no-default-export": 1,
+  "rules": { 
+    "jsx-a11y/click-events-have-key-events": 0,
     "@typescript-eslint/no-empty-interface": 0,
-    "object-curly-spacing": ["error", "always"]
+    "object-curly-spacing": ["error", "always"],
+    "quotes": ["error", "single"]
   },
   "overrides": [
     {
