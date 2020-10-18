@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "consumer",
   "version": "0.1.0",
   "main": "dist/index.js",
   "types": "types.d.ts",
@@ -7,7 +7,7 @@
   "description": "front-end code for podcast application ",
   "private": true,
   "scripts": {
-    "start": "parcel src/index.html",
+    "start": "yarn parcel src/index.html",
     "lint": "yarn run eslint ."
   },
   "dependencies": {
