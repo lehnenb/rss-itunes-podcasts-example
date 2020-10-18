@@ -31,14 +31,6 @@ const PodcastDetails: React.FunctionComponent<Props> = ({ podcast }: Props) => (
       )
     }
     {
-      (podcast.additionalInfo?.summary)
-        && (
-        <div className="podcast-box__summary">
-          { (podcast.additionalInfo?.summary) }
-        </div>
-        )
-    }
-    {
       (podcast.episodeCount)
         && (
           <div className="podcast-box__details__episode-count">
@@ -51,7 +43,14 @@ const PodcastDetails: React.FunctionComponent<Props> = ({ podcast }: Props) => (
           </div>
         )
     }
-
+    {
+      (podcast.additionalInfo?.summary)
+        && (
+        <div className="podcast-box__summary">
+          { (podcast.additionalInfo?.summary) }
+        </div>
+        )
+    }
   </div>
 );
 

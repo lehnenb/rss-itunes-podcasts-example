@@ -55,6 +55,7 @@ function handleSelectPodcastFail(
   return {
     ...state,
     loading: false,
+    podcastData: undefined,
     errors: {
       message: action.payload.message,
     },

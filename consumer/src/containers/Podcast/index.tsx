@@ -25,17 +25,24 @@ interface Props extends ConnectedProps<typeof connector> {
 
 const Podcast: React.FunctionComponent<Props> = ({ podcast }: Props) => {
   const history = useHistory();
+
+  if (podcast.errors?.message) {
+    history.push('/');
+  }
+
   return (
     <div className="podcast">
       <Layout.Content className="podcast__content">
-        <div className="podcast__back-button">
-          <span tabIndex={0} role="button" onClick={() => history.push('/')}>
-            <CaretLeftOutlined />
-            <span>Back</span>
-          </span>
-        </div>
         <Loader show={podcast.loading}>
-          { (podcast.podcastData) ? <PodcastBox podcast={podcast.podcastData} /> : <Redirect to="/" /> }
+          <>
+            <div className="podcast__back-button">
+              <span tabIndex={0} role="button" onClick={() => history.push('/')}>
+                <CaretLeftOutlined />
+                <span>Back</span>
+              </span>
+            </div>
+            { (podcast.podcastData) ? <PodcastBox podcast={podcast.podcastData} /> : <Redirect to="/" /> }
+          </>
         </Loader>
       </Layout.Content>
     </div>

@@ -1,3 +1,4 @@
+import { notification } from 'antd';
 import { ResponsePodcastData } from 'api_types';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
@@ -22,10 +23,10 @@ function selectPodcastSuccess(podcast: ResponsePodcastData) {
   };
 }
 
-function selectPodcastFail(error: Error) {
+function selectPodcastFail(message: string) {
   return {
     type: ACTION_TYPES.SELECT_PODCAST_FAIL,
-    payload: { error },
+    payload: { error: { message } },
   };
 }
 
@@ -36,7 +37,8 @@ function fetchPodcast(url: string): ThunkAction<void, ApplicationState, unknown,
       const podcast = await PodcastService.getPodcastByURL(url);
       dispatch(selectPodcastSuccess(podcast));
     } catch (e) {
-      dispatch(selectPodcastFail(e));
+      notification.error({ message: 'Error', description: e.message });
+      dispatch(selectPodcastFail(e.message));
     }
   };
 }
