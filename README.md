@@ -1,12 +1,12 @@
-#Running application:
+# Running the application:
 
-  Front-end:
+  ## Front-end:
     - cd consumer && yarn start
 
-  Back-end:
+  ## Back-end:
     - cd server && yarn server:watch
 
-  Integration Tests:
+  ## Integration Tests:
     - yarn server:build # Grab some coffee, this will take a while
     - yarn test # Without Cypress interface
     - yarn test:open # With Cypress interface and without video generation

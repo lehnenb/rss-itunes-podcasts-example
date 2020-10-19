@@ -5,7 +5,7 @@ import './Footer.scss';
 
 const Footer: React.FunctionComponent = () => (
   <Layout.Footer className="footer">
-    Audry ©2020 Created by Bruno Lehnen
+    BLS ©2020 Created by Bruno Lehnen
   </Layout.Footer>
 );
 

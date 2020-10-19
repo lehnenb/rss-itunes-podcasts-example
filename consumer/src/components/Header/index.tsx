@@ -6,7 +6,7 @@ import './Header.scss';
 const Header: React.FunctionComponent = () => (
   <Layout.Header className="header">
     <div className="header__logo">
-      <span className="header__company_name">Audry</span>
+      <span className="header__company_name">BLS</span>
       <span className="header__product_name">
         <span>&#60;</span>
         PODCASTS
