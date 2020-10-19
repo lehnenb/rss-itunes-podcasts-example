@@ -13,9 +13,6 @@ function extractID(url: string): string {
 
     throw new Error('ID segment not found');
   } catch (e: unknown) {
-    // eslint-disable-next-line no-console
-    console.error(e);
-
     throw new Error('Invalid URL');
   }
 }

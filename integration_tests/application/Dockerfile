@@ -40,7 +40,7 @@ FROM repo-build as frontend-build
 # Build consumer application
 WORKDIR /app/consumer
 RUN mkdir /dist
-RUN yarn run parcel build src/index.html -d /dist
+RUN NODE_ENV=development yarn run parcel build src/index.html -d /dist
 
 # Full application image
 # --------------

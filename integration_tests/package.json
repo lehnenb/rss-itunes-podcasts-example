@@ -12,8 +12,8 @@
     "server:run": "yarn run server:build && yarn run server:start",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test": "yarn run start-server-and-test server:run http-get://localhost:5001/healthcheck cy:run",
-    "test:open": "yarn run start-server-and-test server:run http-get://localhost:5001/healthcheck cy:open"
+    "test": "yarn run start-server-and-test server:start http-get://localhost:5001/healthcheck cy:run",
+    "test:open": "yarn run start-server-and-test server:start http-get://localhost:5001/healthcheck cy:open"
   },
   "devDependencies": {
     "@types/node": "^14.11.5",
@@ -23,8 +23,10 @@
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
     "prettier": "^2.1.2",
-    "start-server-and-test": "^1.11.5",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "start-server-and-test": "^1.11.5"
   }
 }

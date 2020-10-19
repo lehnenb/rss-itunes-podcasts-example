@@ -1,4 +1,4 @@
-import { config } from './config';
+import { config } from './../server/config';
 
 interface LogData {
     method: string;
@@ -16,6 +16,7 @@ interface LogData {
 
 
 function outputLog(data: Partial<LogData>, thrownError: unknown) {
+  if (process.env.NODE_ENV !== 'test') {
     if (config.prettyLog) {
       console.log(`${data.statusCode} ${data.method} ${data.url} - ${data.responseTime}ms`);
 
@@ -27,6 +28,7 @@ function outputLog(data: Partial<LogData>, thrownError: unknown) {
     } else {
         process.stderr.write(JSON.stringify(data) + '\n');
     }
+  }
 }
 
 interface LogContext {
