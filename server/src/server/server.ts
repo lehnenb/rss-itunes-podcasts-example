@@ -16,6 +16,7 @@ application.use(logger);
 application.use(cors());
 application.use(errors);
 application.use(routes);
+
 export const server = application.listen(config.port);
 
 console.log(`Server running on port ${config.port}`);

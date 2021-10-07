@@ -1,3 +1,6 @@
+# Itunes podcasts application
+ Sample application for searching podcasts using Itunes API and RSS-Feed
+
 # Running the application:
 
   ## Front-end:
